@@ -17,10 +17,39 @@
 import webapp2
 
 class MainHandler(webapp2.RequestHandler):
+    def encrypt(message):
+            result = ""
+          # Loop over characters.
+    for v in message:
+        # Convert to number with ord.
+        c = ord(v)
+
+        # Shift number back or forward.
+        if c >= ord('a') and c <= ord('z'):
+            if c > ord('m'):
+                c -= 13
+            else:
+                c += 13
+        elif c >= ord('A') and c <= ord('Z'):
+            if c > ord('M'):
+                c -= 13
+            else:
+                c += 13
+
+        # Append to result.
+        result += chr(c)
+
+    # Return transformation.
+    return result
+
     def get(self):
         message =" hello world"
         encrypted_message = encrypt(message,13)
-        self.response.write(encrypted_message)
+
+        textarea = "<textarea>" + encrypted_message +"</textarea>"
+        submit = "<input type = 'submit'/>"
+        form = "<form>" + textarea + "<br>" + submit + "</form>"
+        self.response.write(form)
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
